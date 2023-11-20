@@ -12,6 +12,9 @@ This script automates the deployment of a Moodle cluster with GlusterFS as the d
 - Open ports for GlusterFS (24007, 111, 49152-49251, 2049), Nginx (80, 443), and SSH (22).
 - Instances should have a valid hostname.
 
+### Structure diagram
+![image](https://github.com/Johnrivera7/moodle-glusterfs-nginx-cluster/assets/32875176/cf0c56a1-5bb0-4b0d-a2ab-0c7bdeda83e9)  
+
 ## Usage
 
 1. Run the script on each Moodle node.
@@ -35,6 +38,11 @@ This script automates the deployment of a Moodle cluster with GlusterFS as the d
 3. chmod u+x deploy_moodle_cluster.sh
 4. ./deploy_moodle_cluster.sh
 5. Follow the instructions on the screen
+
+## Deploy
+![image](https://github.com/Johnrivera7/moodle-glusterfs-nginx-cluster/assets/32875176/6ee07321-7c59-4388-9564-19a3769257de)
+![image](https://github.com/Johnrivera7/moodle-glusterfs-nginx-cluster/assets/32875176/b94e816f-2c0e-48c6-bb25-66169874dfa7)
+
 
 ## Author
 John Rivera González - johnriveragonzalez@gmail.com
