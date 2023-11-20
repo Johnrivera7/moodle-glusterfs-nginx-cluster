@@ -426,6 +426,6 @@ if [ "$install_cluster" == "s" ]; then
             probe-glusterfs
             gfs-output
 else
-    echo -e "\e[1;31m  >> No se realizaron cambios en la dirección IP. El script se detendrá.\e[0m"
+    echo -e "\e[1;31m  >> El script se detendrá.\e[0m"
     exit 1
 fi
