@@ -40,8 +40,9 @@ This script automates the deployment of a Moodle cluster with GlusterFS as the d
 5. Follow the instructions on the screen
 
 ## Deploy
-![image](https://github.com/Johnrivera7/moodle-glusterfs-nginx-cluster/assets/32875176/6ee07321-7c59-4388-9564-19a3769257de)
-![image](https://github.com/Johnrivera7/moodle-glusterfs-nginx-cluster/assets/32875176/b94e816f-2c0e-48c6-bb25-66169874dfa7)
+
+
+![284403267-6ee07321-7c59-4388-9564-19a3769257de](https://github.com/Johnrivera7/moodle-glusterfs-nginx-cluster/assets/32875176/327d7784-3d6f-4dcf-9dbb-b28521649564)
 
 
 ## Author
