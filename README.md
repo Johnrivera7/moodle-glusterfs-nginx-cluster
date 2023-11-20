@@ -30,7 +30,7 @@ This script automates the deployment of a Moodle cluster with GlusterFS as the d
 
 1. Clone this repository to your local machine.
    ```bash
-   git clone https://github.com/your-username/moodle-glusterfs-nginx-cluster.git
+   git clone https://github.com/Johnrivera7/moodle-glusterfs-nginx-cluster.git
 2. cd moodle-glusterfs-nginx-cluster
 
 ## Author
