@@ -113,7 +113,63 @@ function moodle-app {
   sudo chmod 0777 /var/www/$DOMAIN/moodledata/
   sudo chown -R www-data:www-data /var/www/$DOMAIN/moodledata/
   echo -e "  >> Carpeta creada y permisos cambiados [\e[1;32mOK\e[1;37m]\e[0m"
-1
+  
+  # Configuración de Nginx para Moodle
+  NGINX_CONFIG="/etc/nginx/sites-available/$DOMAIN"
+  sudo tee $NGINX_CONFIG > /dev/null <<EOF
+server {
+    listen 80;
+    root /var/www/$DOMAIN/moodle/;
+    index index.php index.html index.htm;
+    server_name $DOMAIN;
+    access_log /var/log/nginx/$DOMAIN-access.log;
+    error_log /var/log/nginx/$DOMAIN-error.log;
+
+    client_max_body_size 100M;
+    client_body_buffer_size 128k;
+    autoindex off;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    fastcgi_read_timeout 1200s;
+
+    location ~ [^/].php(/|$) {
+        include snippets/fastcgi-php.conf;
+        fastcgi_send_timeout 900;
+        fastcgi_read_timeout 900;
+        fastcgi_pass unix:/run/php/php$PHP_VERSION-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        include fastcgi_params;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
+    }
+
+    # La siguiente sección es para la gestión de archivos dataroot de Moodle
+    location /dataroot/ {
+        internal;
+        alias /var/www/$DOMAIN/moodledata/;
+    }
+}
+EOF
+
+  # Crear enlace simbólico a la configuración
+  sudo ln -s $NGINX_CONFIG /etc/nginx/sites-enabled/
+  sudo service nginx reload
+
+  echo -e "\e[1;37m [+] Configuración de Nginx creada y recargada . . . . .\e[0m"
+  echo -e "  >> Puede acceder a su sitio Moodle en http://$DOMAIN/"
+}
+
+function config_node_nginx {
+  # Preguntar al usuario por el dominio
+  read -p "Ingrese el dominio del sitio Moodle: " DOMAIN
+
+  # Obtener la versión de PHP instalada en el sistema
+  PHP_PATH=$(which php)
+  PHP_VERSION=$($PHP_PATH -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')
+
+
   # Configuración de Nginx para Moodle
   NGINX_CONFIG="/etc/nginx/sites-available/$DOMAIN"
   sudo tee $NGINX_CONFIG > /dev/null <<EOF
@@ -305,6 +361,7 @@ function probe-glusterfs {
             echo -e "\e[1;37m [+] Configurando montaje automático en /etc/fstab . . . . .\e[0m"
             echo "moodle-0001:/gv0 /var/www/ glusterfs defaults,_netdev 0 0" | sudo tee -a /etc/fstab
             echo -e "  >> Configuración de montaje automático en /etc/fstab [\e[1;32mOK\e[1;37m]\e[0m"
+            config_node_nginx
          fi
  
             sudo mount -t glusterfs moodle-0001:/gv0 /var/www/
